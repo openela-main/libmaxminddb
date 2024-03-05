@@ -1,7 +1,7 @@
 Name:           libmaxminddb
 Summary:        C library for the MaxMind DB file format
 Version:        1.2.0
-Release:        10%{?dist}
+Release:        10%{?dist}.1
 URL:            https://maxmind.github.io/libmaxminddb
 Source0:        https://github.com/maxmind/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
 
@@ -11,6 +11,8 @@ License:        ASL 2.0 and BSD
 
 BuildRequires:  perl-interpreter
 Recommends:		geolite2-city, geolite2-country
+
+Patch0000: 0000-CVE-2020-28241.patch
 
 %description
 The package contains libmaxminddb library.
@@ -29,6 +31,8 @@ and the mmdblookup utility which allows IP address lookup in a MaxMind DB file.
 
 %prep
 %setup -q
+
+%patch0000 -p1 -b .cve-2020-28241
 
 %build
 %configure --disable-static
@@ -83,6 +87,9 @@ EOF
 %{_mandir}/man3/*
 
 %changelog
+* Thu Jan 04 2024 Michal Ruprich <mruprich@redhat.com> - 1.2.0-10.1
+- Resolves: RHEL-20594 - improper initialization in dump_entry_data_list() in maxminddb.c
+
 * Mon Jun 08 2020 Michal Ruprich <michalruprich@gmail.com> - 1.2.0-10
 - Related: #1642001 - Obsoleting -devel-debuginfo to enable clean update path
 
