@@ -1,7 +1,7 @@
 Name:           libmaxminddb
 Summary:        C library for the MaxMind DB file format
 Version:        1.5.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            https://maxmind.github.io/libmaxminddb
 Source:         https://github.com/maxmind/libmaxminddb/releases/download/%{version}/%{name}-%{version}.tar.gz
 
@@ -16,6 +16,7 @@ BuildRequires:  libtool
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(FindBin)
 BuildRequires:  make
+BuildRequires:  git-core
 
 %description
 The package contains libmaxminddb library.
@@ -29,7 +30,7 @@ The package contains development header files for the libmaxminddb library
 and the mmdblookup utility which allows IP address lookup in a MaxMind DB file.
 
 %prep
-%autosetup
+%autosetup -S git
 sed -i -e '/AM_CFLAGS=/d' common.mk
 sed -i -e '/CFLAGS=/d' configure.ac
 
@@ -77,6 +78,9 @@ EOF
 %{_mandir}/man3/*.3*
 
 %changelog
+* Mon Apr 29 2024 Michal Ruprich <mruprich@redhat.com> - 1.5.2-4
+- Resolves: RHEL-30424 - Addressing findings from static application security testing
+
 * Mon Aug 09 2021 Mohan Boddu <mboddu@redhat.com> - 1.5.2-3
 - Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
   Related: rhbz#1991688
